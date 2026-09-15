@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<title>Instruqt Homepage v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300..800;1,400..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  /* ============ TOKENS · official Instruqt brand ============
+     Type: Libre Franklin (headings/body) + Courier Prime (code/terminal) · brand page
+     Palette from brand deck: Dark Navy #181C32 (ground) · Navy #060E3D · Medium Indigo #393F67 (PRIMARY 400)
+     · Lt Gray #D4D4D4 · White · tertiary (sparingly, for emphasis): Blue #0097FF, Pink #FF50A4,
+     Purple #BE78FF, Orange #FF8F28. Navy backgrounds, white/lt-gray text per palette-use rules. */
+  :root{
+    --bg:#181C32;            /* Dark Navy · primary ground */
+    --navy:#060E3D;          /* Navy · deep panels (terminal, badges) */
+    --bg-raise:#1F2543;      /* derived: Dark Navy +1 step */
+    --bg-panel:#242B4E;      /* derived: Dark Navy +2 steps */
+    --line:#393F67;          /* Medium Indigo (PRIMARY 400) · borders/relief */
+    --line-soft:#2A3054;     /* derived: indigo mixed to ground */
+    --text:#FFFFFF;
+    --muted:#D4D4D4;         /* Lt Gray */
+    --faint:#9BA0C0;         /* derived: indigo-tinted caption gray */
+    --blue:#0097FF;          /* tertiary · action/emphasis */
+    --blue-dim:rgba(0,151,255,.13);
+    --pink:#FF50A4;          /* tertiary · hero emphasis, marketing */
+    --purple:#BE78FF;        /* tertiary · education, quote */
+    --orange:#FF8F28;        /* tertiary · sales, hot signals */
+    --note:#f5b944;          /* PMM annotation amber · deliberately off-brand */
+    --note-dim:rgba(245,185,68,.12);
+    --mono:"Courier Prime","Courier New",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:"Libre Franklin",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --maxw:1160px;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:var(--sans);font-size:16.5px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  img{max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{border-top:1px solid var(--line-soft)}
+  .sec{padding:88px 0}
+  h1,h2{font-weight:800;letter-spacing:-.02em;text-wrap:balance;line-height:1.12}
+  h3{font-weight:700;letter-spacing:-.01em;text-wrap:balance;line-height:1.2}
+  h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:14px}
+  .lead{color:var(--muted);max-width:62ch}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--blue);display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;
+  }
+  .eyebrow::before{content:"//";color:var(--faint)}
+  .hero .eyebrow{font-size:11px;letter-spacing:.11em;white-space:nowrap}
+  @media (max-width:700px){.hero .eyebrow{white-space:normal}}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+
+  /* ============ Buttons ============ */
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;
+    padding:12px 22px;border-radius:8px;border:1px solid transparent;cursor:pointer;
+    font-family:var(--sans);transition:transform .12s ease,background .12s ease}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  .btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .btn-primary:hover{background:#33aaff}
+  .btn-ghost{background:transparent;color:var(--text);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--muted)}
+  .btn .tick{font-family:var(--mono)}
+
+  /* ============ PMM NOTE chips ============ */
+  .pmm{position:relative;display:inline-flex;vertical-align:middle;margin-left:10px}
+  .pmm > button{
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;font-weight:700;
+    color:var(--note);background:var(--note-dim);border:1px dashed var(--note);
+    border-radius:4px;padding:3px 7px;cursor:help;
+  }
+  .pmm .tip{
+    display:none;position:absolute;z-index:60;top:calc(100% + 8px);left:0;
+    width:300px;background:#1c1508;border:1px solid var(--note);border-radius:8px;
+    padding:12px 14px;font-size:13px;line-height:1.5;color:#f3e3bd;font-weight:400;
+    font-family:var(--sans);letter-spacing:0;text-transform:none;box-shadow:0 12px 32px rgba(0,0,0,.5);
+  }
+  .pmm .tip strong{color:var(--note)}
+  .pmm:hover .tip,.pmm:focus-within .tip{display:block}
+  .pmm.tip-right .tip{left:auto;right:0}
+  .draftbar{
+    background:var(--note-dim);border-bottom:1px dashed rgba(245,185,68,.45);
+    color:var(--note);font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
+    text-align:center;padding:7px 16px;
+  }
+
+  /* ============ Header / nav ============ */
+  header.site{
+    position:sticky;top:0;z-index:50;background:rgba(24,28,50,.92);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft);
+  }
+  .navbar{display:flex;align-items:center;gap:8px;height:66px}
+  /* Primary wordmark, white-on-dark (per brand page; swap for official SVG asset) */
+  .logo{display:flex;align-items:center;font-weight:800;font-size:21px;
+    letter-spacing:-.025em;color:#fff;margin-right:18px;text-transform:lowercase}
+  .logo:hover{text-decoration:none}
+  nav.main{display:flex;align-items:center;gap:2px;flex:1}
+  .nav-item{position:relative}
+  .nav-item > a,.nav-item > button{
+    display:flex;align-items:center;gap:5px;padding:10px 13px;font-size:14.5px;font-weight:500;
+    color:var(--text);background:none;border:0;cursor:pointer;font-family:var(--sans);border-radius:6px;
+  }
+  .nav-item > a:hover,.nav-item > button:hover{background:var(--bg-raise);text-decoration:none}
+  .nav-item .caret{font-size:9px;color:var(--faint)}
+  .mega{
+    display:none;position:absolute;top:calc(100% + 6px);left:0;
+    background:var(--bg-panel);border:1px solid var(--line);border-radius:12px;
+    padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.55);min-width:560px;
+  }
+  .nav-item.open .mega{display:grid;gap:26px}
+  .mega.cols-3{grid-template-columns:repeat(3,1fr)}
+  .mega.cols-2{grid-template-columns:repeat(2,1fr);min-width:460px}
+  .mega.cols-1{grid-template-columns:1fr;min-width:220px}
+  .mega h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:10px}
+  .mega ul{list-style:none}
+  .mega li a{display:block;padding:5px 0;font-size:14px;color:var(--text)}
+  .mega li a:hover{color:var(--blue);text-decoration:none}
+  .mega li a .arr{color:var(--blue)}
+  .nav-right{display:flex;align-items:center;gap:14px;margin-left:auto}
+  .nav-right .signin{font-size:14.5px;color:var(--text);font-weight:500}
+  .nav-right .btn{padding:9px 16px;font-size:14px}
+  .hamburger{display:none;background:none;border:1px solid var(--line);color:var(--text);
+    border-radius:6px;padding:7px 10px;font-family:var(--mono);cursor:pointer}
+
+  /* ============ Hero ============ */
+  .hero{border-top:0;position:relative;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 45% at 75% 20%,rgba(190,120,255,.09),transparent 65%),
+      repeating-linear-gradient(to bottom,transparent 0 47px,rgba(57,63,103,.30) 47px 48px);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center;
+    padding:76px 0 84px;position:relative}
+  .hero h1{font-size:clamp(34px,4.6vw,54px);margin-bottom:20px}
+  .hero h1 .hl{color:var(--pink)}
+  .hero .sub{color:var(--muted);font-size:18px;max-width:56ch;margin-bottom:28px}
+  .hero .sub b{color:var(--text);font-weight:600}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .micro{font-family:var(--mono);font-size:12.5px;color:var(--faint)}
+  .micro b{color:var(--muted);font-weight:500}
+
+  /* ---- lab widget ---- */
+  .lab{position:relative}
+  .lab-window{
+    background:var(--navy);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(0,151,255,.10);
+  }
+  .lab-chrome{display:flex;align-items:center;gap:8px;padding:11px 14px;
+    background:var(--bg-panel);border-bottom:1px solid var(--line)}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+  .lab-chrome .url{font-family:var(--mono);font-size:11.5px;color:var(--faint);
+    background:var(--bg);border:1px solid var(--line-soft);border-radius:5px;
+    padding:3px 10px;margin-left:8px}
+  .lab-body{display:grid;grid-template-columns:180px 1fr;min-height:284px}
+  .lab-steps{border-right:1px solid var(--line-soft);padding:16px 14px;background:rgba(6,14,61,.5)}
+  .lab-steps h6{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .step{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--muted);
+    padding:7px 0;line-height:1.35}
+  .step .box{flex:none;width:15px;height:15px;border:1.5px solid var(--line);border-radius:4px;
+    margin-top:1px;display:grid;place-items:center;font-size:10px;color:#fff;
+    font-family:var(--mono);transition:all .3s}
+  .step.done .box{background:var(--blue);border-color:var(--blue)}
+  .step.done .box::after{content:"✓"}
+  .step.done{color:var(--text)}
+  .step.active{color:var(--blue)}
+  .step.active .box{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
+  .lab-term{padding:16px 18px;font-family:var(--mono);font-size:13px;line-height:1.75;
+    color:#D4D4D4;overflow:hidden}
+  .lab-term .ln{white-space:pre-wrap;word-break:break-word;min-height:1.75em}
+  .lab-term .p{color:var(--blue)}
+  .lab-term .ok{color:var(--blue)}
+  .lab-term .dim{color:var(--faint)}
+  .lab-term .cursor{display:inline-block;width:8px;height:15px;background:var(--blue);
+    vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .lab-badge{
+    position:absolute;bottom:-16px;left:22px;display:inline-flex;align-items:center;gap:8px;
+    background:var(--navy);border:1px solid var(--blue);color:var(--blue);border-radius:99px;
+    font-family:var(--mono);font-size:11.5px;padding:7px 14px;letter-spacing:.02em;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+  }
+  .lab-badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--blue);
+    animation:pulse 1.6s ease infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,151,255,.5)}60%{box-shadow:0 0 0 6px rgba(0,151,255,0)}}
+  @media (prefers-reduced-motion:reduce){
+    .lab-badge .pulse,.lab-term .cursor{animation:none}
+    html{scroll-behavior:auto}
+  }
+
+  /* ============ Logo bar ============ */
+  .logos{padding:34px 0 38px}
+  .logos .cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);text-align:center;margin-bottom:22px}
+  .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 44px;align-items:center}
+  .plogo{font-weight:700;font-size:17px;letter-spacing:-.01em;color:var(--muted);opacity:.85}
+  .plogo.serif{font-family:Georgia,serif;font-weight:600}
+  .plogo.mono{font-family:var(--mono);font-weight:600;font-size:15px}
+  .pending{display:block;text-align:center;margin-top:18px;font-family:var(--mono);
+    font-size:11px;color:var(--note)}
+
+  /* ============ Problem ============ */
+  .gap-callout{
+    display:flex;gap:16px;align-items:flex-start;background:var(--bg-raise);
+    border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:var(--radius);
+    padding:20px 22px;margin:30px 0 36px;max-width:820px;
+  }
+  .gap-callout .glyph{font-family:var(--mono);color:var(--blue);font-size:18px;margin-top:2px}
+  .gap-callout p{color:var(--muted);font-size:15px}
+  .gap-callout .stat{color:var(--text);font-weight:600}
+  .gap-callout .src{display:block;margin-top:8px;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .pain{background:var(--bg-raise);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .pain .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    margin-bottom:12px;display:inline-block;padding:3px 8px;border-radius:4px}
+  .pain .who.mk{color:var(--pink);background:rgba(255,80,164,.12)}
+  .pain .who.sl{color:var(--orange);background:rgba(255,143,40,.12)}
+  .pain .who.ed{color:var(--purple);background:rgba(190,120,255,.12)}
+  .pain h3{font-size:18.5px;margin-bottom:10px}
+  .pain p{color:var(--muted);font-size:14.5px}
+
+  /* ============ How it works ============ */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .how{position:relative;background:var(--bg-raise);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 24px}
+  .how .num{font-family:var(--mono);color:var(--blue);font-size:13px;margin-bottom:14px;display:block}
+  .how h3{font-size:19px;margin-bottom:10px}
+  .how p{color:var(--muted);font-size:14.5px}
+  .how code{font-family:var(--mono);font-size:12.5px;background:var(--bg);border:1px solid var(--line-soft);
+    border-radius:5px;padding:2px 6px;color:var(--blue)}
+
+  /* ---- contrast band ---- */
+  .versus{margin-top:56px;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:grid;grid-template-columns:1fr 1fr}
+  .versus > div{padding:28px 30px}
+  .versus .them{background:var(--bg-raise)}
+  .versus .us{background:linear-gradient(160deg,rgba(0,151,255,.10),rgba(0,151,255,.02));
+    border-left:1px solid var(--line)}
+  .versus h4{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+  .versus .them h4{color:var(--muted)}
+  .versus .us h4{color:var(--blue)}
+  .versus ul{list-style:none}
+  .versus li{font-size:14px;color:var(--muted);padding:5px 0 5px 22px;position:relative}
+  .versus .them li::before{content:"×";position:absolute;left:0;color:var(--faint);font-family:var(--mono)}
+  .versus .us li::before{content:"✓";position:absolute;left:0;color:var(--blue);font-family:var(--mono)}
+  .versus .us li{color:var(--text)}
+
+  /* ============ Persona tabs ============ */
+  .tabs-head{display:flex;gap:6px;border:1px solid var(--line);border-radius:12px;padding:6px;
+    background:var(--bg-raise);width:max-content;max-width:100%;margin:36px 0 0;flex-wrap:wrap}
+  .tab-btn{font-family:var(--sans);font-size:15px;font-weight:600;color:var(--muted);
+    background:none;border:0;border-radius:8px;padding:11px 22px;cursor:pointer}
+  .tab-btn[aria-selected="true"]{background:var(--blue);color:#fff}
+  .tab-btn:not([aria-selected="true"]):hover{color:var(--text)}
+  .pane{display:none;margin-top:34px;background:var(--bg-raise);border:1px solid var(--line);
+    border-radius:14px;padding:40px;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+  .pane.show{display:grid}
+  .pane .pain-line{font-family:var(--mono);font-size:12.5px;color:var(--pink);margin-bottom:14px}
+  .pane .pain-line::before{content:"✕ the old way: ";color:var(--faint)}
+  .pane .with-line{font-family:var(--mono);font-size:12.5px;color:var(--blue);margin-bottom:8px}
+  .pane .with-line::before{content:"✓ with instruqt: ";color:var(--faint)}
+  .pane h3{font-size:clamp(22px,2.6vw,30px);margin-bottom:14px}
+  .pane .body{color:var(--muted);font-size:15.5px;margin-bottom:8px}
+  .pane .body b{color:var(--text);font-weight:600}
+  .pane .stat-chip{display:inline-flex;align-items:baseline;gap:10px;margin:18px 0 22px;
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+  .pane .stat-chip .n{font-size:26px;font-weight:700;color:var(--blue);font-family:var(--mono)}
+  .pane .stat-chip .l{font-size:13px;color:var(--muted)}
+  .illus{font-family:var(--mono);font-size:10px;color:var(--note);border:1px dashed var(--note);
+    border-radius:4px;padding:2px 6px;line-height:1.5}
+  .pane .links{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .pane .deep{font-size:14.5px}
+  .pane-visual{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:20px;
+    font-family:var(--mono);font-size:12.5px}
+  .pane-visual h6{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);
+    margin-bottom:14px;font-family:var(--mono)}
+  .sig{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:6px;
+    background:var(--bg-raise);border:1px solid var(--line-soft);margin-bottom:8px;color:var(--muted)}
+  .sig .v{color:var(--blue)}
+  .sig .hot{color:var(--orange)}
+  .bar{height:8px;background:var(--bg-raise);border:1px solid var(--line-soft);border-radius:99px;
+    overflow:hidden;margin:6px 0 14px}
+  .bar i{display:block;height:100%;background:var(--blue);border-radius:99px}
+  .pane-visual .row-l{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+
+  /* ============ Platform grid ============ */
+  .plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+  .plat{background:var(--bg-raise);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .plat svg{width:26px;height:26px;stroke:var(--blue);fill:none;stroke-width:1.6;margin-bottom:14px}
+  .plat h3{font-size:16.5px;margin-bottom:8px}
+  .plat p{color:var(--muted);font-size:14px}
+
+  /* ============ Proof band ============ */
+  .proof{background:linear-gradient(180deg,rgba(57,63,103,.35),transparent)}
+  .proof h2{text-align:center;max-width:24ch;margin:0 auto}
+  .proof .proof-grid{margin-top:44px}
+  .proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:stretch}
+  .stat-card{background:var(--bg-raise);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;display:flex;flex-direction:column;gap:8px}
+  .stat-card.hero-stat{border-color:var(--blue);background:linear-gradient(160deg,rgba(0,151,255,.12),rgba(0,151,255,.02))}
+  .stat-card .n{font-family:var(--mono);font-weight:700;font-size:38px;color:var(--blue);letter-spacing:-.02em}
+  .stat-card.hero-stat .n{font-size:46px}
+  .stat-card .l{font-size:14px;color:var(--muted)}
+  .stat-card .src{margin-top:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .stat-card .pillar{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+  /* ============ Quote ============ */
+  .quote{max-width:860px;margin:0 auto;text-align:center}
+  .quote .qmark{font-family:Georgia,serif;font-size:64px;color:var(--purple);line-height:.6;display:block;margin-bottom:22px}
+  .quote blockquote{font-size:clamp(20px,2.4vw,27px);font-weight:600;letter-spacing:-.01em;
+    line-height:1.4;text-wrap:balance;margin-bottom:26px}
+  .quote .who{color:var(--muted);font-size:15px}
+  .quote .who b{color:var(--text)}
+  .approval{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:11px;
+    color:var(--note);border:1px dashed var(--note);border-radius:4px;padding:3px 8px}
+
+  /* ============ Final CTA ============ */
+  .final{text-align:center;padding:104px 0;position:relative;overflow:hidden}
+  .final::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 55% 60% at 50% 100%,rgba(0,151,255,.12),transparent 70%)}
+  .final h2{font-size:clamp(28px,3.8vw,44px);max-width:20ch;margin:0 auto 26px}
+  .final .cta-row{justify-content:center}
+  .final .micro{display:block;margin-top:6px}
+
+  /* ============ Footer ============ */
+  footer.site{border-top:1px solid var(--line-soft);padding:52px 0 40px}
+  .foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .foot-brand p{color:var(--faint);font-size:13.5px;max-width:30ch;margin-top:12px}
+  .foot-cols{display:flex;gap:56px;flex-wrap:wrap}
+  .foot-cols h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--faint);margin-bottom:12px}
+  .foot-cols ul{list-style:none}
+  .foot-cols li a{display:block;padding:3.5px 0;font-size:13.5px;color:var(--muted)}
+  .foot-cols li a:hover{color:var(--blue);text-decoration:none}
+  .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:44px;
+    padding-top:22px;border-top:1px solid var(--line-soft);
+    font-size:12.5px;color:var(--faint);font-family:var(--mono)}
+  .legal a{color:var(--faint)}
+
+  /* ============ Responsive ============ */
+  @media (max-width:1020px){
+    .hero-grid{grid-template-columns:1fr;gap:64px;padding-top:56px}
+    .cards3,.steps3,.plat-grid{grid-template-columns:1fr 1fr}
+    .proof-grid{grid-template-columns:1fr 1fr}
+    .pane{grid-template-columns:1fr;padding:30px}
+  }
+  @media (max-width:860px){
+    nav.main{display:none}
+    nav.main.mobile-open{
+      display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;
+      align-items:stretch;background:var(--bg-panel);border-bottom:1px solid var(--line);
+      padding:14px 20px 22px;gap:2px;max-height:calc(100vh - 66px);overflow-y:auto;
+    }
+    nav.main.mobile-open .mega{position:static;display:none;min-width:0;box-shadow:none;
+      border:0;border-left:2px solid var(--line);border-radius:0;padding:8px 0 8px 16px;
+      grid-template-columns:1fr!important}
+    nav.main.mobile-open .nav-item.open .mega{display:grid}
+    .hamburger{display:block;margin-left:auto}
+    .nav-right .signin{display:none}
+    .nav-right{margin-left:8px}
+  }
+  @media (max-width:640px){
+    .cards3,.steps3,.plat-grid,.proof-grid{grid-template-columns:1fr}
+    .versus{grid-template-columns:1fr}
+    .versus .us{border-left:0;border-top:1px solid var(--line)}
+    .lab-body{grid-template-columns:1fr}
+    .lab-steps{border-right:0;border-bottom:1px solid var(--line-soft);display:flex;gap:4px 16px;
+      flex-wrap:wrap;align-items:center}
+    .lab-steps h6{width:100%;margin-bottom:4px}
+    .step{padding:3px 0}
+    .sec{padding:64px 0}
+    .pmm .tip{width:min(300px,78vw)}
+  }
+</style>
+</head>
+<body>
+
+
+
+<!-- ==================== HEADER ==================== -->
+<header class="site">
+  <div class="wrap navbar">
+    <a class="logo" href="#">instruqt</a>
+
+    <nav class="main" id="mainnav" aria-label="Main">
+      <div class="nav-item">
+        <button aria-expanded="false" data-menu>Platform <span class="caret">▼</span></button>
+        <div class="mega cols-3">
+          <div>
+            <h5>Create</h5>
+            <ul>
+              <li><a href="#">Labs &amp; challenges</a></li>
+              <li><a href="#">Lab-on-code / GitOps</a></li>
+              <li><a href="#">AI-assisted authoring</a></li>
+              <li><a href="#">Disposable cloud accounts</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Run &amp; Deliver</h5>
+            <ul>
+              <li><a href="#">Sandbox environments</a></li>
+              <li><a href="#">Embeddable labs</a></li>
+              <li><a href="#">Live events &amp; instructor tools</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Technology</h5>
+            <ul>
+              <li><a href="#">Platform overview</a></li>
+              <li><a href="#">AI at Instruqt <span class="arr">→</span></a></li>
+              <li><a href="#">Integrations <span class="arr">→</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <button aria-expanded="false" data-menu>Solutions <span class="caret">▼</span></button>
+        <div class="mega cols-2">
+          <div>
+            <h5>By Team</h5>
+            <ul>
+              <li><a href="#">Marketing</a></li>
+              <li><a href="#">Sales</a></li>
+              <li><a href="#">Education</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>By Use Case</h5>
+            <ul>
+              <li><a href="#">Lead generation</a></li>
+              <li><a href="https://instruqt.com/interactive-tours">Interactive product tours</a></li>
+              <li><a href="#">DevRel &amp; developer marketing</a></li>
+              <li><a href="#">Demos &amp; POCs</a></li>
+              <li><a href="#">Customer onboarding &amp; training</a></li>
+              <li><a href="#">Workshops &amp; VILT</a></li>
+              <li><a href="#">Technical sales enablement</a></li>
+              <li><a href="#">Instruqt for AI</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item"><a href="#">Pricing</a></div>
+      <div class="nav-item"><a href="#">Customers</a></div>
+
+      <div class="nav-item">
+        <button aria-expanded="false" data-menu>Resources <span class="caret">▼</span></button>
+        <div class="mega cols-3">
+          <div>
+            <h5>Discover</h5>
+            <ul>
+              <li><a href="#">Resource hub</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Events &amp; webinars</a></li>
+              <li><a href="https://instruqt.com/interactive-tours">Interactive product tours</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Learn</h5>
+            <ul>
+              <li><a href="#">Tutorials</a></li>
+              <li><a href="#">Glossary</a></li>
+              <li><a href="#">Documentation</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Featured</h5>
+            <ul>
+              <li><a href="#">State of developer adoption</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <button aria-expanded="false" data-menu>Company <span class="caret">▼</span></button>
+        <div class="mega cols-1">
+          <div>
+            <ul>
+              <li><a href="#">Our story</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Branding page</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="nav-right">
+      <a class="signin" href="#">Sign in</a>
+      <a class="btn btn-primary" href="https://instruqt.com/product-tour">Try now</a>
+      <button class="hamburger" id="hamb" aria-label="Menu" aria-expanded="false">≡</button>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Real environments for product tours, demos, POCs and training</span>
+      <h1>Other demo tools record your product. <span class="hl">Instruqt runs it.</span></h1>
+      <p class="sub">Instruqt spins up <b>live environments</b> of your software in the browser. Real infrastructure, real CLIs, disposable when they’re done. No installs, no setup, no shared demo account to break.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://instruqt.com/product-tour">Try now <span class="tick">→</span></a>
+        <a class="btn btn-ghost" href="#">Talk to an expert</a>
+      </div>
+      <p class="micro"><b>Free to try</b> · No form fill · Runs in your browser · Trusted by MongoDB, Elastic, HashiCorp &amp; more</p>
+    </div>
+
+    <div class="lab" aria-label="Simulated Instruqt lab">
+      <div class="lab-window">
+        <div class="lab-chrome">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">play.instruqt.com/your-product/k8s-quickstart</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-steps">
+            <h6>Steps</h6>
+            <div class="step" data-step="0"><span class="box"></span>Spin up your sandbox</div>
+            <div class="step" data-step="1"><span class="box"></span>Deploy the demo app</div>
+            <div class="step" data-step="2"><span class="box"></span>Break something (on purpose)</div>
+            <div class="step" data-step="3"><span class="box"></span>Fix it like you would in prod</div>
+          </div>
+          <div class="lab-term" id="term" aria-live="off"></div>
+        </div>
+      </div>
+      <div class="lab-badge"><span class="pulse"></span>This is Instruqt: a real environment, not a video</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== LOGO BAR ==================== -->
+<section class="logos">
+  <div class="wrap">
+    <p class="cap">Trusted by the teams behind complex software</p>
+    <div class="logo-row">
+      <span class="plogo serif">MongoDB</span>
+      <span class="plogo">elastic</span>
+      <span class="plogo mono">HashiCorp</span>
+      <span class="plogo">Google Cloud</span>
+      <span class="plogo serif">SUSE</span>
+      <span class="plogo mono">Harness</span>
+      <span class="plogo">Solo.io</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROOF BAND ==================== -->
+<section class="sec proof">
+  <div class="wrap">
+    <h2>With hands-on experiences GTM teams achieve stronger results</h2>
+
+    <div class="proof-grid">
+      <div class="stat-card">
+        <span class="pillar">Leads</span>
+        <span class="n">1,700</span>
+        <span class="l">labs completed at one KubeCon booth; 1,500+ qualified leads generated</span>
+        <span class="src">source: Solo.io</span>
+      </div>
+      <div class="stat-card">
+        <span class="pillar">Pipeline</span>
+        <span class="n">$100M+</span>
+        <span class="l">in pipeline generated, plus $44M in closed-won ARR, from field programs leveraging Instruqt</span>
+        <span class="src">source: Pure Storage</span>
+      </div>
+      <div class="stat-card">
+        <span class="pillar">Adoption</span>
+        <span class="n">71%</span>
+        <span class="l">higher adoption among trained customers; fewer support tickets</span>
+        <span class="src">source: Harness</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PROBLEM ==================== -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">The problem</span>
+    <h2>Great software doesn’t sell itself.</h2>
+    <p class="lead">If people can’t experience your software, they don’t buy it. Videos get skimmed, demos get forgotten, POCs stall in setup hell, and all of it is pipeline going cold. Technical buyers don’t want to be told your product is great. They want to feel it.</p>
+
+    <div class="cards3">
+      <div class="pain">
+        <span class="who mk">Marketing</span>
+        <h3>Content that doesn’t convert</h3>
+        <p>Gated PDFs and static websites collect contact info, not intent. Technical audiences bounce off anything that tells instead of shows.</p>
+      </div>
+      <div class="pain">
+        <span class="who sl">Sales / Pre-sales</span>
+        <h3>Demos &amp; POCs that drag</h3>
+        <p>SEs burn days on one-off environments. POCs stall in the prospect’s infrastructure before anyone touches the product.</p>
+      </div>
+      <div class="pain">
+        <span class="who ed">Education</span>
+        <h3>Training that doesn’t stick</h3>
+        <p>Slides, screenshots, and documentation don’t build skills. Users watch, forget, and churn before they get real value.</p>
+      </div>
+    </div>
+
+
+    <div class="gap-callout">
+      <span class="glyph">▲</span>
+      <p>AI is widening the gap: <span class="stat">features ship faster than customers can adopt them.</span> Per SlashData, <span class="stat">92% of practitioners face at least one significant adoption challenge.</span>
+      <span class="src">Source: SlashData · read the full story on <a href="https://instruqt.com/ai-adoption">Instruqt for AI →</a></span></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">How it works</span>
+    <h2>Build once. Share everywhere. Measure everything.</h2>
+    <p class="lead">No new infrastructure, no SEs on standby. Your real product, packaged as a guided experience.</p>
+
+    <div class="steps3">
+      <div class="how">
+        <span class="num">01 / build</span>
+        <h3>Build</h3>
+        <p>Package your real product (VMs, containers, Kubernetes, cloud accounts, any stack) into a guided, sandboxed lab. Author by hand, <code>lab-on-code</code> via GitOps, or with AI assistance.</p>
+      </div>
+      <div class="how">
+        <span class="num">02 / share</span>
+        <h3>Share</h3>
+        <p>Embed labs in landing pages, campaigns, sales calls, docs, or your LMS. One link. Runs in the browser. Nothing to install.</p>
+      </div>
+      <div class="how">
+        <span class="num">03 / measure</span>
+        <h3>Measure</h3>
+        <p>Track outcomes, not just activity. Link engagement to pipeline and adoption, see what moves the needle, and double down on what works.</p>
+      </div>
+    </div>
+
+    <div class="versus">
+      <div class="them">
+        <h4>Click-through demo tools</h4>
+        <ul>
+          <li>Simulated screenshots stitched into a tour</li>
+          <li>One happy path; deviate and it breaks</li>
+          <li>Feels like a slideshow, because it is one</li>
+        </ul>
+      </div>
+      <div class="us">
+        <h4>Instruqt: real, live environments</h4>
+        <ul>
+          <li>Your actual product, running: real data, real problems</li>
+          <li>Users can explore, break things, and fix them</li>
+          <li>The full workflow: your product plus the tools around it</li>
+          <li>Behavior you can measure, because it’s real usage</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PERSONA TABS ==================== -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">For every team</span>
+    <h2>One hands-on experience powering every go-to-market motion.</h2>
+    <p class="lead">Build a lab once. Marketing gates it, sales tailors it, education scales it. Every team reads the signals that drive their outcomes.</p>
+
+    <div class="tabs-head" role="tablist" aria-label="Choose your team">
+      <button class="tab-btn" role="tab" id="tab-mk" aria-selected="true" aria-controls="pane-mk">Marketing</button>
+      <button class="tab-btn" role="tab" id="tab-sl" aria-selected="false" aria-controls="pane-sl">Sales / Pre-sales</button>
+      <button class="tab-btn" role="tab" id="tab-ed" aria-selected="false" aria-controls="pane-ed">Education</button>
+    </div>
+
+    <!-- Marketing -->
+    <div class="pane show" role="tabpanel" id="pane-mk" aria-labelledby="tab-mk">
+      <div>
+        <p class="pain-line">campaigns full of MQLs who have no real intent</p>
+        <p class="with-line">gate the experience, capture real intent</p>
+        <h3>Turn your product into your best lead magnet.</h3>
+        <p class="body">Gate the product experience, not PDFs. Every session gives you <b>intent signals from real behavior</b>: who started, who finished, where they leaned in. It’s the content that gets technical audiences to say, <b>“OK, I get it. Let’s talk.”</b></p>
+        <div class="stat-chip"><span class="n">3×</span><span class="l">lead-to-opportunity conversion on hands-on content</span></div>
+        <div class="links">
+          <a class="btn btn-primary" href="https://instruqt.com/self-guided-tour-marketing">Take the marketing tour <span class="tick">→</span></a>
+          <a class="deep" href="#">Instruqt for Marketing →</a>
+        </div>
+      </div>
+      <div class="pane-visual" aria-hidden="true">
+        <h6>Lab engagement · campaign: k8s-quickstart</h6>
+        <div class="sig"><span>jamie@prospect.io</span><span class="v">completed · 24 min</span></div>
+        <div class="sig"><span>sam@bigco.com</span><span class="hot">challenge 3 of 4 · active now</span></div>
+        <div class="sig"><span>dev@startup.dev</span><span class="v">completed · shared with team</span></div>
+        <div class="sig"><span>alex@enterprise.com</span><span>started · struggling on step 2</span></div>
+      </div>
+    </div>
+
+    <!-- Sales -->
+    <div class="pane" role="tabpanel" id="pane-sl" aria-labelledby="tab-sl" hidden>
+      <div>
+        <p class="pain-line">SE team productivity lost to one-off demo environments</p>
+        <p class="with-line">tailored environments in minutes</p>
+        <h3>Stop babysitting sandboxes.</h3>
+        <p class="body">Spin up <b>tailored demo and POC environments in minutes</b>, not days. Give prospects a <b>real environment, real data, and a real problem</b>. Engagement signals land in your CRM and tell you when and how to follow up.</p>
+        <div class="stat-chip"><span class="n">−40%</span><span class="l">time-to-close when POCs run on Instruqt</span></div>
+        <div class="links">
+          <a class="btn btn-primary" href="https://instruqt.com/self-guided-tour-sales">Take the sales tour <span class="tick">→</span></a>
+          <a class="deep" href="#">Instruqt for Sales →</a>
+        </div>
+      </div>
+      <div class="pane-visual" aria-hidden="true">
+        <h6>POC environment · acme-corp-eval</h6>
+        <div class="sig"><span>$ instruqt env create --template acme-poc</span></div>
+        <div class="sig"><span>environment ready</span><span class="v">2m 14s</span></div>
+        <div class="sig"><span>prospect activity</span><span class="hot">4 sessions this week</span></div>
+        <div class="sig"><span>signal</span><span class="v">tested the integration twice → follow up</span></div>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="pane" role="tabpanel" id="pane-ed" aria-labelledby="tab-ed" hidden>
+      <div>
+        <p class="pain-line">course completions that never turn into competence</p>
+        <p class="with-line">hands-on paths that show up in usage</p>
+        <h3>Training that actually drives adoption.</h3>
+        <p class="body"><b>Real environments build muscle memory</b> videos can’t. Onboard customers, partners, and internal teams faster, with <b>activity-based insights that prove objectives are met</b>.</p>
+        <div class="stat-chip"><span class="n">2×</span><span class="l">product usage after hands-on onboarding</span></div>
+        <div class="links">
+          <a class="btn btn-primary" href="https://instruqt.com/self-guided-tour-education">Take the education tour <span class="tick">→</span></a>
+          <a class="deep" href="#">Instruqt for Education →</a>
+        </div>
+      </div>
+      <div class="pane-visual" aria-hidden="true">
+        <h6>Onboarding cohort · Q3</h6>
+        <div class="row-l"><span>Completed hands-on onboarding</span><span>142/160</span></div>
+        <div class="bar"><i style="width:89%"></i></div>
+        <div class="row-l"><span>Weekly product usage · before</span><span>31%</span></div>
+        <div class="bar"><i style="width:31%"></i></div>
+        <div class="row-l"><span>Weekly product usage · after</span><span>74%</span></div>
+        <div class="bar"><i style="width:74%"></i></div>
+        <div class="sig"><span>completions → usage lift</span><span class="v">✓ tracked per user</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PLATFORM GRID ==================== -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">The platform</span>
+    <h2>Real infrastructure, not a simulation layer.</h2>
+    <p class="lead">Build labs in hours on the stack your product runs on, share them with any audience, and see what hands-on time does to your pipeline.</p>
+
+    <div class="plat-grid">
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+        <h3>Any stack</h3>
+        <p>VMs, containers, Kubernetes clusters, disposable cloud accounts, GPUs, and managed AI services like Bedrock and Vertex. Nothing gets cut from the demo because the platform couldn’t run it.</p>
+      </div>
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v6c0 4-3.5 7-8 8-4.5-1-8-4-8-8V7z"/></svg>
+        <h3>Sandboxed &amp; disposable</h3>
+        <p>Every session gets its own isolated cloud account with scoped, short-lived credentials. No shared state, no route to production. Pause it, resume it, or throw it away, with nothing to clean up afterwards.</p>
+      </div>
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><path d="M8 8l-5 4 5 4"/><path d="M16 8l5 4-5 4"/><path d="M13 5l-2 14"/></svg>
+        <h3>Embeddable anywhere</h3>
+        <p>Drop labs into landing pages, campaigns, docs, or your LMS over LTI. No account, no install, no download. One click and your audience is in the product instead of reading about it.</p>
+      </div>
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><path d="M5 19l6-14 3 7 2-3 3 10"/><path d="M3 19h18"/></svg>
+        <h3>AI-assisted authoring</h3>
+        <p>Create sandbox and instructional content from your docs, repos, or a brain dump. A working lab in an afternoon, and every team ships in the same brand and voice.</p>
+      </div>
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8 7l8 4M8 17l8-4"/></svg>
+        <h3>Lab-on-code / GitOps</h3>
+        <p>Labs can live as code. Keep them in Git, review changes in PRs, and validate them in CI. When the product changes, the lab fails your pipeline instead of your customer demo.</p>
+      </div>
+      <div class="plat">
+        <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>
+        <h3>Analytics &amp; tracking</h3>
+        <p>Engagement data to understand your users and improve your content. The same signals in Salesforce or HubSpot to show what hands-on time did for pipeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== QUOTE ==================== -->
+<section class="sec">
+  <div class="wrap quote">
+    <span class="qmark">“</span>
+    <blockquote>On the AI front, Instruqt is fantastic because it allows us to spin up a dedicated Vertex environment per participant.</blockquote>
+    <p class="who"><b>Keith Manville</b> · Customer Engineer, Google Cloud Security</p>
+  </div>
+</section>
+
+<!-- ==================== FINAL CTA ==================== -->
+<section class="final">
+  <div class="wrap">
+    <span class="eyebrow">Get started</span>
+    <h2>The fastest way to understand Instruqt? Get hands-on with it.</h2>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://instruqt.com/product-tour">Try it hands-on <span class="tick">→</span></a>
+      <a class="btn btn-ghost" href="#">Get a demo</a>
+    </div>
+    <span class="micro"><b>Free to try</b> · Runs in your browser · No install, no setup</span>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="#">instruqt</a>
+        <p>The hands-on product experience platform. Real environments, in the browser, in seconds.</p>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <h5>Product</h5>
+          <ul>
+            <li><a href="#">Platform</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Customers</a></li>
+            <li><a href="https://instruqt.com/interactive-tours">Product tours</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Solutions</h5>
+          <ul>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Sales</a></li>
+            <li><a href="#">Education</a></li>
+            <li><a href="#">Instruqt for AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">Our story</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Instruqt · Mockup for internal review · not a live page</span>
+      <span><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Security</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ Mega menus ============ */
+(function(){
+  const items = document.querySelectorAll('.nav-item');
+  const hamb = document.getElementById('hamb');
+  const nav = document.getElementById('mainnav');
+  const isMobile = () => window.matchMedia('(max-width:860px)').matches;
+
+  items.forEach(item=>{
+    const btn = item.querySelector('button[data-menu]');
+    if(!btn) return;
+    btn.addEventListener('click', e=>{
+      e.stopPropagation();
+      const wasOpen = item.classList.contains('open');
+      items.forEach(i=>{i.classList.remove('open'); const b=i.querySelector('button[data-menu]'); if(b) b.setAttribute('aria-expanded','false');});
+      if(!wasOpen){ item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    });
+    // hover open on desktop
+    item.addEventListener('mouseenter', ()=>{ if(!isMobile()){ item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }});
+    item.addEventListener('mouseleave', ()=>{ if(!isMobile()){ item.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }});
+  });
+  document.addEventListener('click', ()=>{ items.forEach(i=>i.classList.remove('open')); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') items.forEach(i=>i.classList.remove('open')); });
+
+  hamb.addEventListener('click', e=>{
+    e.stopPropagation();
+    const open = nav.classList.toggle('mobile-open');
+    hamb.setAttribute('aria-expanded', String(open));
+  });
+})();
+
+/* ============ Persona tabs ============ */
+(function(){
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panes = document.querySelectorAll('.pane');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.setAttribute('aria-selected','false'));
+      panes.forEach(p=>{p.classList.remove('show'); p.hidden=true;});
+      tab.setAttribute('aria-selected','true');
+      const pane = document.getElementById(tab.getAttribute('aria-controls'));
+      pane.hidden=false; pane.classList.add('show');
+    });
+  });
+})();
+
+/* ============ Hero lab simulation ============ */
+(function(){
+  const term = document.getElementById('term');
+  const steps = document.querySelectorAll('.lab-steps .step');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // script: [type|out, text, stepToCompleteAfter]
+  const script = [
+    ['type','$ instruqt lab start k8s-quickstart', null],
+    ['out','<span class="ok">✔</span> Sandbox ready <span class="dim">· 3 nodes, isolated, disposable</span>', 0],
+    ['type','$ kubectl apply -f demo-app.yaml', null],
+    ['out','deployment.apps/demo-app <span class="ok">created</span>', null],
+    ['out','<span class="ok">✔</span> Step complete: <span class="dim">app deployed</span>', 1],
+    ['type','$ kubectl delete pod demo-app-7d4b9 --now', null],
+    ['out','<span class="dim">pod "demo-app-7d4b9" deleted, traffic failing over…</span>', 2],
+    ['type','$ kubectl get pods -w', null],
+    ['out','demo-app-f52xc   1/1   <span class="ok">Running</span>   <span class="dim">self-healed in 4s</span>', null],
+    ['out','<span class="ok">✔ Track complete.</span> <span class="dim">This all ran in a real cluster. Yours would too.</span>', 3],
+  ];
+
+  function reset(){
+    term.innerHTML='';
+    steps.forEach(s=>s.classList.remove('done','active'));
+  }
+
+  if(reduced){
+    // static completed state
+    script.forEach(([kind,text])=>{
+      const ln=document.createElement('div'); ln.className='ln';
+      ln.innerHTML = kind==='type' ? '<span class="p">'+text.replace('$','$')+'</span>' : text;
+      term.appendChild(ln);
+    });
+    steps.forEach(s=>s.classList.add('done'));
+    return;
+  }
+
+  let i=0;
+  function nextLine(){
+    if(i>=script.length){ setTimeout(()=>{reset(); i=0; setActive(0); nextLine();}, 4200); return; }
+    const [kind,text,step]=script[i];
+    const ln=document.createElement('div'); ln.className='ln';
+    term.appendChild(ln);
+    // keep max ~9 lines
+    while(term.children.length>9) term.removeChild(term.firstChild);
+
+    if(kind==='type'){
+      let c=0;
+      ln.innerHTML='<span class="p"></span><span class="cursor"></span>';
+      const target=ln.querySelector('.p');
+      const cur=ln.querySelector('.cursor');
+      const t=setInterval(()=>{
+        target.textContent=text.slice(0,++c);
+        if(c>=text.length){ clearInterval(t); cur.remove(); done(); }
+      }, 34);
+    } else {
+      setTimeout(()=>{ ln.innerHTML=text; done(); }, 420);
+    }
+    function done(){
+      if(step!==null && step!==undefined){
+        steps[step].classList.remove('active');
+        steps[step].classList.add('done');
+        if(steps[step+1]) setActive(step+1);
+      }
+      i++;
+      setTimeout(nextLine, kind==='type'?350:650);
+    }
+  }
+  function setActive(n){ steps.forEach(s=>s.classList.remove('active')); if(steps[n]) steps[n].classList.add('active'); }
+  setActive(0);
+  nextLine();
+})();
+</script>
+
+</body>
+</html>
